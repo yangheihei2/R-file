@@ -165,14 +165,3 @@ Rscript simulation_for_5_classes_logistic.R
 ```bash
 Rscript simulation_5_classes_0_05_svm.R
 ```
-
----
-
-## 5. One-click Reproducibility (optional)
-
-The repository is currently organized as one script per experiment. If you want, I can add:
-
-- `run_all.R`: execute all experiments in manuscript order
-- `run_fast.R`: run quick smoke tests with smaller `n_runs` (e.g., 10 or 20)
-
-This usually makes R Journal reproducibility checks smoother.
