@@ -1,57 +1,57 @@
-# HNPclassifier 论文代码说明（R Journal 稿件对应）
+# HNPclassifier Manuscript Code Guide (R Journal Mapping)
 
-这个仓库用于对应你当前 LaTeX 稿件中的示例、仿真和部分图形复现实验。  
-下面按“论文章节 -> 对应脚本 -> 使用方法”整理，便于投稿时核对与复现。
+This repository maps to the examples, simulations, and figure-generation workflows in your current LaTeX manuscript.  
+The sections below are organized as: manuscript section -> script -> how to run.
 
 ---
 
-## 1. 环境准备
+## 1. Setup
 
-### 1.1 R 依赖包
+### 1.1 R packages
 
-请先安装依赖：
+Install dependencies first:
 
 ```r
 install.packages(c("MASS", "nnet", "randomForest", "e1071"))
 ```
 
-### 1.2 运行前说明
+### 1.2 Notes before running
 
-- 大部分脚本第一行都通过 `source("hnp_package_importance_order.R")` 加载核心函数。
-- 很多 simulation 脚本默认 `n_runs = 1000`，计算时间会比较长。
-- 脚本中部分保存语句会尝试保存 `boxplot_out`，但原脚本没有给这个对象赋值；如果直接运行，保存步骤可能报错（见“常见问题”）。
+- Most scripts load core functions via `source("hnp_package_importance_order.R")`.
+- Many simulation scripts use `n_runs = 1000` by default, so runtime can be long.
+- Some scripts try to save `boxplot_out` without assigning it first; direct runs may fail at the save step.
 
 ---
 
-## 2. 核心函数文件（算法实现）
+## 2. Core Function File (Algorithm Implementation)
 
 ### `hnp_package_importance_order.R`
 
-这是核心实现文件，包含：
+This is the core implementation file. It includes:
 
-- H--NP 主函数：`hnp_umbrella()`
-- 结果评估：`hnp_summary()`
-- 重复实验可视化与统计：`hnp_boxplot()`
-- 关键算法组件：  
-  `hnp_upper_bound()`、`hnp_delta_search()`、`hnp_predict_proba()`、`hnp_build_score_functions()` 等
-- 示例中用到的数据生成与辅助函数：  
-  `generate_ball_data()`、`train_nn_and_get_scores()` 等
+- Main H--NP interface: `hnp_umbrella()`
+- Evaluation: `hnp_summary()`
+- Repeated-run visualization and summary: `hnp_boxplot()`
+- Key algorithmic components:  
+  `hnp_upper_bound()`, `hnp_delta_search()`, `hnp_predict_proba()`, `hnp_build_score_functions()`, etc.
+- Data generation and helper utilities used in examples:  
+  `generate_ball_data()`, `train_nn_and_get_scores()`, etc.
 
 ---
 
-## 3. 论文 “Implementation details” 对应代码
+## 3. Code for Manuscript “Implementation details”
 
-### 3.1 Example 1（高斯三分类，内置 base learner）
+### 3.1 Example 1 (three-class Gaussian, built-in base learner)
 
-**对应脚本**：`EXample1.R`
+**Script**: `EXample1.R`
 
-**用途**：
+**What it does**:
 
-- 生成三类高斯数据（`A/B/C`）
-- 训练 H--NP 分类器（脚本里当前 `method = "svm"`）
-- 展示 `hnp_summary()` 输出（混淆矩阵、overall accuracy、under-classification error、remaining error）
+- Generates three Gaussian classes (`A/B/C`)
+- Trains an H--NP classifier (current script setting: `method = "svm"`)
+- Shows `hnp_summary()` outputs (confusion matrix, overall accuracy, under-classification error, remaining error)
 
-**运行**：
+**Run**:
 
 ```bash
 Rscript EXample1.R
@@ -59,20 +59,20 @@ Rscript EXample1.R
 
 ---
 
-### 3.2 Example 2（pretrained model / score function / score matrix）
+### 3.2 Example 2 (pretrained model / score function / score matrix)
 
-**对应脚本**：`Example2_all.R`
+**Script**: `Example2_all.R`
 
-**用途**：
+**What it does**:
 
-- 用 `generate_ball_data()` 生成三分类球形分布数据
-- 训练神经网络并通过三种输入方式构建 H--NP：
+- Uses `generate_ball_data()` to generate three-class spherical data
+- Trains a neural network and builds H--NP classifiers with three input modes:
   1. `pretrained_model = nn_model$model`
   2. `pretrained_model = score_fun`
-  3. `input_is_score = TRUE`（直接喂 score matrix）
-- 进行重复实验并调用 `hnp_boxplot()`
+  3. `input_is_score = TRUE` (direct score matrix input)
+- Runs repeated experiments and calls `hnp_boxplot()`
 
-**运行**：
+**Run**:
 
 ```bash
 Rscript Example2_all.R
@@ -80,43 +80,43 @@ Rscript Example2_all.R
 
 ---
 
-## 4. 论文 “Simulation studies” 对应代码
+## 4. Code for Manuscript “Simulation studies”
 
 ---
 
-### 4.1 Simulation 1（3-class Gaussian）
+### 4.1 Simulation 1 (3-class Gaussian)
 
-#### 设定 T1
-- 脚本：`simulation_for_3_classes_T1.R`
-- 典型 split：`(0.50/0.50), (0.45/0.50/0.05), (0.95/0/0.05)`
-- 输出保存：`simulation_3class_gaussian_hnp_T1.RData`
+#### Setting T1
+- Script: `simulation_for_3_classes_T1.R`
+- Typical split: `(0.50/0.50), (0.45/0.50/0.05), (0.95/0/0.05)`
+- Saved output: `simulation_3class_gaussian_hnp_T1.RData`
 
-#### 设定 T2
-- 脚本：`simulation_for_3_classes_T2.R`
-- split 更偏训练：`(0.80/0.20), (0.75/0.20/0.05), ...`
-- 输出保存：`simulation_3class_gaussian_hnp_T2.RData`
+#### Setting T2
+- Script: `simulation_for_3_classes_T2.R`
+- Training-heavier split: `(0.80/0.20), (0.75/0.20/0.05), ...`
+- Saved output: `simulation_3class_gaussian_hnp_T2.RData`
 
-#### 设定 T3
-- 脚本：`simulation_for_3_classes_T3.R`
-- split：`(0.70/0.30), (0.65/0.30/0.05), ...`
-- 输出保存：`simulation_3class_gaussian_hnp_T3.RData`
+#### Setting T3
+- Script: `simulation_for_3_classes_T3.R`
+- Split: `(0.70/0.30), (0.65/0.30/0.05), ...`
+- Saved output: `simulation_3class_gaussian_hnp_T3.RData`
 
-#### 设定 T4
-- 脚本：`simiulation_for_3_classes_T4.R`（文件名里 `simiulation` 拼写保留原样）
-- split：`(0.60/0.40), (0.55/0.40/0.05), ...`
-- 输出保存：`simulation_3class_gaussian_hnp_T4.RData`
+#### Setting T4
+- Script: `simiulation_for_3_classes_T4.R` (original filename spelling kept as-is)
+- Split: `(0.60/0.40), (0.55/0.40/0.05), ...`
+- Saved output: `simulation_3class_gaussian_hnp_T4.RData`
 
-#### 设定 T5
-- 脚本：`simulation_for_3_classes_T5.R`
-- split 更偏 threshold：`(0.30/0.70), (0.25/0.70/0.05), ...`
-- 输出保存：`simulation_3class_gaussian_hnp_T5.RData`
+#### Setting T5
+- Script: `simulation_for_3_classes_T5.R`
+- Threshold-heavier split: `(0.30/0.70), (0.25/0.70/0.05), ...`
+- Saved output: `simulation_3class_gaussian_hnp_T5.RData`
 
-#### 设定 T6（类别不平衡）
-- 脚本：`simulation_for_3_classes_T6.R`
-- 类别样本量：`n_train = c(300, 300, 600)`
-- 输出保存：`simulation_3class_gaussian_hnp_T6.RData`
+#### Setting T6 (class imbalance)
+- Script: `simulation_for_3_classes_T6.R`
+- Class sizes: `n_train = c(300, 300, 600)`
+- Saved output: `simulation_3class_gaussian_hnp_T6.RData`
 
-**运行方式（示例）**：
+**Run example**:
 
 ```bash
 Rscript simulation_for_3_classes_T1.R
@@ -124,21 +124,21 @@ Rscript simulation_for_3_classes_T1.R
 
 ---
 
-### 4.2 Simulation 2（5-class Gaussian，alpha=delta=0.1）
+### 4.2 Simulation 2 (5-class Gaussian, alpha=delta=0.1)
 
 #### Logistic
-- 脚本：`simulation_for_5_classes_logistic.R`
-- 输出：`simulation_5_class_gaussian_hnp_logistic.RData`
+- Script: `simulation_for_5_classes_logistic.R`
+- Output: `simulation_5_class_gaussian_hnp_logistic.RData`
 
 #### Random Forest
-- 脚本：`simulation_for_5_classes_randomforest.R`
-- 输出：`simulation_5_class_gaussian_hnp_randomforest.RData`
+- Script: `simulation_for_5_classes_randomforest.R`
+- Output: `simulation_5_class_gaussian_hnp_randomforest.RData`
 
 #### SVM
-- 脚本：`simulation_for_5_classes_svm.R`
-- 输出：`simulation_5_class_gaussian_hnp_svm.RData`
+- Script: `simulation_for_5_classes_svm.R`
+- Output: `simulation_5_class_gaussian_hnp_svm.RData`
 
-**运行方式（示例）**：
+**Run example**:
 
 ```bash
 Rscript simulation_for_5_classes_logistic.R
@@ -146,21 +146,21 @@ Rscript simulation_for_5_classes_logistic.R
 
 ---
 
-### 4.3 5-class 更严格控制（alpha=delta=0.05）
+### 4.3 Stricter 5-class control (alpha=delta=0.05)
 
 #### Logistic
-- 脚本：`simulation_5_classes_0_05_logistic.R`
-- 输出：`simulation_5_class_gaussian_hnp_logistic_0_05.RData`
+- Script: `simulation_5_classes_0_05_logistic.R`
+- Output: `simulation_5_class_gaussian_hnp_logistic_0_05.RData`
 
 #### Random Forest
-- 脚本：`simulation_5_classes_0_05_randomforest.R`
-- 输出：`simulation_5_class_gaussian_hnp_randomforest_0_05.RData`
+- Script: `simulation_5_classes_0_05_randomforest.R`
+- Output: `simulation_5_class_gaussian_hnp_randomforest_0_05.RData`
 
 #### SVM
-- 脚本：`simulation_5_classes_0_05_svm.R`
-- 输出：`simulation_5_class_gaussian_hnp_svm_0_05.RData`
+- Script: `simulation_5_classes_0_05_svm.R`
+- Output: `simulation_5_class_gaussian_hnp_svm_0_05.RData`
 
-**运行方式（示例）**：
+**Run example**:
 
 ```bash
 Rscript simulation_5_classes_0_05_svm.R
@@ -168,41 +168,11 @@ Rscript simulation_5_classes_0_05_svm.R
 
 ---
 
-## 5. 与 LaTeX 章节的快速对应
+## 5. One-click Reproducibility (optional)
 
-- **Implementation details / Example 1** -> `EXample1.R`
-- **Implementation details / Example 2** -> `Example2_all.R`
-- **Simulation 1: three-class classification** -> `simulation_for_3_classes_T1.R` ... `T6`
-- **Simulation 2: five-class classification** -> `simulation_for_5_classes_logistic.R` / `randomforest` / `svm`
-- **补充 0.05 级别实验** -> `simulation_5_classes_0_05_*`
-- **函数实现与包行为说明** -> `hnp_package_importance_order.R`
+The repository is currently organized as one script per experiment. If you want, I can add:
 
----
+- `run_all.R`: execute all experiments in manuscript order
+- `run_fast.R`: run quick smoke tests with smaller `n_runs` (e.g., 10 or 20)
 
-## 6. 常见问题（建议在投稿前统一修正）
-
-1. **`boxplot_out` 未定义**  
-   多个脚本末尾 `save(..., boxplot_out, ...)`，但前面没有 `boxplot_out <- hnp_boxplot(...)`。  
-   建议改成：
-   ```r
-   boxplot_out <- hnp_boxplot(...)
-   ```
-
-2. **拼写不一致**  
-   - `simiulation_for_3_classes_T4.R`（多了一个 i）
-   - `EXample1.R`（大小写不统一）
-   建议投稿前统一命名，避免 reviewer 运行时困惑。
-
-3. **部分脚本含本机绝对路径 `load("~/Desktop/...")`**  
-   这会影响复现。建议改为仓库相对路径或注释掉。
-
----
-
-## 7. 一键复现建议（可选）
-
-目前仓库是“每个实验一个脚本”。如果你愿意，我下一步可以再帮你加一个：
-
-- `run_all.R`：按章节顺序依次运行
-- `run_fast.R`：把 `n_runs` 临时降到 10 或 20 做快速 smoke test
-
-这样更符合 R Journal 对“可复现性”的阅读体验。
+This usually makes R Journal reproducibility checks smoother.
