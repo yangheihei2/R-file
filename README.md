@@ -23,22 +23,6 @@ Runtime depends on the machine, the base learner, and the value of `n_runs`. The
 
 ---
 
-## 2. Core implementation
-
-### `hnp_package_importance_order.R`
-
-This file contains the main H-NP implementation and helper functions:
-
-- `hnp_umbrella()` — fits an H-NP classifier.
-- `hnp_summary()` — reports confusion matrix, accuracy, under-classification error, over-classification error, and remaining error.
-- `hnp_boxplot()` — summarizes repeated-run results and draws comparison plots.
-- `hnp_upper_bound()` and `hnp_delta_search()` — compute order-statistic thresholds for error control.
-- `hnp_predict_proba()` and `hnp_build_score_functions()` — build or extract score functions.
-- Data-generation and example helpers, such as `generate_ball_data()` and `train_nn_and_get_scores()`.
-
-Estimated time: no standalone runtime. This file is loaded by the other scripts.
-
----
 
 ## 3. Implementation examples
 
