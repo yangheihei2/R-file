@@ -99,6 +99,32 @@ To run only one setting:
 Rscript simulation_for_3_classes_T1.R
 ```
 
+**Output format**
+
+After `run_all_T1_T4.R` finishes, it prints and saves a summary table (`metric_table_print` / `table_3class_metric_results.csv`) with the following columns:
+
+| Column | Meaning |
+|---|---|
+| `Paradigm` | `Classical` (base learner only) or `H-NP` (H-NP-adjusted classifier). |
+| `Setting` | `C1` / `C2` for classical baselines; `T1`--`T4` for H-NP split settings. |
+| `R1_star` | Average first under-classification error. |
+| `R2_star` | Average second under-classification error. |
+| `V1` | Violation rate for the first under-classification error (proportion of runs exceeding the target level). |
+| `V2` | Violation rate for the second under-classification error. |
+| `R_overall` | Average overall misclassification error. |
+
+Example console output:
+
+```
+  Paradigm Setting R1_star R2_star    V1    V2 R_overall
+ Classical      C1   0.222   0.344 1.000 1.000     0.362
+ Classical      C2   0.285   0.709 1.000 1.000     0.400
+      H-NP      T1   0.034   0.051 0.096 0.001     0.587
+      H-NP      T2   0.031   0.039 0.098 0.002     0.597
+      H-NP      T3   0.036   0.057 0.082 0.002     0.581
+      H-NP      T4   0.031   0.037 0.102 0.004     0.598
+```
+
 ---
 
 ### 4.2 Simulation 2: five-class Gaussian data, alpha = delta = 0.1
