@@ -144,6 +144,15 @@ save(
   base_method,
   conf_classical,
   conf_hnp,
-  boxplot_out,
   file = "simulation_3class_gaussian_hnp_T1.RData"
+)
+
+script_output <- list(
+  setting = "T1",
+  n_train = n_train,
+  hnp_split = hnp_split,
+  alpha = alpha,
+  delta = delta,
+  conf_classical = conf_classical,
+  conf_hnp = conf_hnp
 )

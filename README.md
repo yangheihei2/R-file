@@ -86,37 +86,27 @@ Rscript Example2_all.R
 
 ### 4.1 Simulation 1 (3-class Gaussian)
 
-#### Setting T1
-- Script: `simulation_for_3_classes_T1.R`
-- Typical split: `(0.50/0.50), (0.45/0.50/0.05), (0.95/0/0.05)`
-- Saved output: `simulation_3class_gaussian_hnp_T1.RData`
+Run all three-class settings (T1–T4) and generate the metric table with:
 
-#### Setting T2
-- Script: `simulation_for_3_classes_T2.R`
-- Training-heavier split: `(0.80/0.20), (0.75/0.20/0.05), ...`
-- Saved output: `simulation_3class_gaussian_hnp_T2.RData`
+```bash
+Rscript run_all_T1_T4.R
+```
 
-#### Setting T3
-- Script: `simulation_for_3_classes_T3.R`
-- Split: `(0.70/0.30), (0.65/0.30/0.05), ...`
-- Saved output: `simulation_3class_gaussian_hnp_T3.RData`
+This script sources `simulation_for_3_classes_T1.R` through `simulation_for_3_classes_T4.R`, then writes:
 
-#### Setting T4
-- Script: `simiulation_for_3_classes_T4.R` (original filename spelling kept as-is)
-- Split: `(0.60/0.40), (0.55/0.40/0.05), ...`
-- Saved output: `simulation_3class_gaussian_hnp_T4.RData`
+- `all_T1_T4_outputs.rds` — full outputs for T1–T4
+- `table_3class_metric_results.csv` — summary table (`R1_star`, `R2_star`, `V1`, `V2`, `R_overall`)
 
-#### Setting T5
-- Script: `simulation_for_3_classes_T5.R`
-- Threshold-heavier split: `(0.30/0.70), (0.25/0.70/0.05), ...`
-- Saved output: `simulation_3class_gaussian_hnp_T5.RData`
+Each individual script also saves its own `.RData` file (e.g. `simulation_3class_gaussian_hnp_T1.RData`).
 
-#### Setting T6 (class imbalance)
-- Script: `simulation_for_3_classes_T6.R`
-- Class sizes: `n_train = c(300, 300, 600)`
-- Saved output: `simulation_3class_gaussian_hnp_T6.RData`
+| Setting | Script | Key configuration |
+|---|---|---|
+| T1 | `simulation_for_3_classes_T1.R` | Balanced classes; split `(0.50/0.50), (0.45/0.50/0.05), (0.95/0/0.05)` |
+| T2 | `simulation_for_3_classes_T2.R` | Balanced classes; split `(0.70/0.30), (0.65/0.30/0.05), ...` |
+| T3 | `simulation_for_3_classes_T3.R` | Balanced classes; split `(0.30/0.70), (0.25/0.70/0.05), ...` |
+| T4 | `simulation_for_3_classes_T4.R` | Imbalanced classes `n_train = c(300, 300, 600)`; default split |
 
-**Run example**:
+To run a single setting only:
 
 ```bash
 Rscript simulation_for_3_classes_T1.R

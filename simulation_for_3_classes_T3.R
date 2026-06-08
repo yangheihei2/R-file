@@ -18,8 +18,8 @@ alpha <- c(0.05, 0.1)
 delta <- c(0.1, 0.1)
 
 hnp_split = list(
-  c(train = 0.70, threshold = 0.30, error = 0.00),
-  c(train = 0.65, threshold = 0.30, error = 0.05),
+  c(train = 0.30, threshold = 0.70, error = 0.00),
+  c(train = 0.25, threshold = 0.70, error = 0.05),
   c(train = 0.95, threshold = 0.00, error = 0.05)
 )
 
@@ -144,6 +144,15 @@ save(
   base_method,
   conf_classical,
   conf_hnp,
-  boxplot_out,
   file = "simulation_3class_gaussian_hnp_T3.RData"
+)
+
+script_output <- list(
+  setting = "T3",
+  n_train = n_train,
+  hnp_split = hnp_split,
+  alpha = alpha,
+  delta = delta,
+  conf_classical = conf_classical,
+  conf_hnp = conf_hnp
 )
