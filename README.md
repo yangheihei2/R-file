@@ -52,7 +52,7 @@ Rscript EXample1.R
 | Main purpose | Shows three input modes for H-NP classification. |
 | Input modes | `pretrained_model`, user-defined `score_fun`, and `input_is_score = TRUE`. |
 | Main output | Repeated-run summaries and `hnp_boxplot()` results. |
-| Estimated time | About 2--10 minutes, depending on the repeated-run setting. |
+| Estimated time | About 1--2 minutes, depending on the repeated-run setting. |
 
 Run:
 
@@ -87,11 +87,11 @@ Main output files:
 
 | Setting | Script | Main configuration | Estimated time |
 |---|---|---|---|
-| T1 | `simulation_for_3_classes_T1.R` | Balanced classes; split `(0.50/0.50), (0.45/0.50/0.05), (0.95/0/0.05)` | 5--20 minutes |
-| T2 | `simulation_for_3_classes_T2.R` | Balanced classes; split `(0.70/0.30), (0.65/0.30/0.05), ...` | 5--20 minutes |
-| T3 | `simulation_for_3_classes_T3.R` | Balanced classes; split `(0.30/0.70), (0.25/0.70/0.05), ...` | 5--20 minutes |
-| T4 | `simulation_for_3_classes_T4.R` | Imbalanced classes, `n_train = c(300, 300, 600)` | 5--20 minutes |
-| All T1--T4 | `run_all_T1_T4.R` | Runs T1 through T4 and writes the combined table | 20--80 minutes |
+| T1 | `simulation_for_3_classes_T1.R` | Balanced classes; split `(0.50/0.50), (0.45/0.50/0.05), (0.95/0/0.05)` | 1--3 minutes |
+| T2 | `simulation_for_3_classes_T2.R` | Balanced classes; split `(0.70/0.30), (0.65/0.30/0.05), ...` | 1--3 minutes |
+| T3 | `simulation_for_3_classes_T3.R` | Balanced classes; split `(0.30/0.70), (0.25/0.70/0.05), ...` | 1--3 minutes |
+| T4 | `simulation_for_3_classes_T4.R` | Imbalanced classes, `n_train = c(300, 300, 600)` | 1--3 minutes |
+| All T1--T4 | `run_all_T1_T4.R` | Runs T1 through T4 and writes the combined table | 4--12 minutes |
 
 To run only one setting:
 
