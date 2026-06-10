@@ -18,6 +18,8 @@ Most scripts load the implementation with:
 library(HNPclassifier)
 ```
 
+The estimated runtimes below are approximate and depend on the machine, base learner, and current simulation settings.
+
 ---
 
 ## 2. Examples
@@ -30,6 +32,8 @@ Rscript EXample1.R
 
 This script demonstrates the basic use of `hnp_umbrella()`. The current base learner is `method = "svm"`. The main output is the `hnp_summary()` result, including the confusion matrix and error metrics.
 
+Estimated time: less than 1 minute.
+
 ### 2.2 Example 2: three input modes
 
 ```bash
@@ -41,6 +45,8 @@ This script demonstrates three input modes for H-NP classification:
 - `pretrained_model`
 - user-defined `score_fun`
 - score-matrix input with `input_is_score = TRUE`
+
+Estimated time: about 1--2 minutes.
 
 ---
 
@@ -59,6 +65,8 @@ This runner executes:
 - `simulation_for_3_classes_T3.R`
 - `simulation_for_3_classes_T4.R`
 
+Estimated time for `run_all_T1_T4.R`: about 4--12 minutes.
+
 Main output:
 
 | Paradigm | Setting | R1_star | R2_star | V1 | V2 | R_overall |
@@ -72,12 +80,12 @@ Main output:
 
 To run a single setting:
 
-```bash
-Rscript simulation_for_3_classes_T1.R
-Rscript simulation_for_3_classes_T2.R
-Rscript simulation_for_3_classes_T3.R
-Rscript simulation_for_3_classes_T4.R
-```
+| Script | Estimated time |
+|---|---:|
+| `simulation_for_3_classes_T1.R` | 1--3 minutes |
+| `simulation_for_3_classes_T2.R` | 1--3 minutes |
+| `simulation_for_3_classes_T3.R` | 1--3 minutes |
+| `simulation_for_3_classes_T4.R` | 1--3 minutes |
 
 The three-class summary table contains:
 
@@ -99,13 +107,15 @@ The three-class summary table contains:
 Rscript run_simulation_for_5_classes_all.R
 ```
 
+Estimated time for `run_simulation_for_5_classes_all.R`: about 70--270 minutes.
+
 This runner executes the following three scripts:
 
-| Base learner | Individual script | Result file saved by the individual script |
-|---|---|---|
-| Logistic regression | `simulation_for_5_classes_logistic.R` | `simulation_5_class_gaussian_hnp_logistic.RData` |
-| Random forest | `simulation_for_5_classes_randomforest.R` | `simulation_5_class_gaussian_hnp_randomforest.RData` |
-| SVM | `simulation_for_5_classes_svm.R` | `simulation_5_class_gaussian_hnp_svm.RData` |
+| Base learner | Individual script | Result file saved by the individual script | Estimated time |
+|---|---|---|---:|
+| Logistic regression | `simulation_for_5_classes_logistic.R` | `simulation_5_class_gaussian_hnp_logistic.RData` | 10--30 minutes |
+| Random forest | `simulation_for_5_classes_randomforest.R` | `simulation_5_class_gaussian_hnp_randomforest.RData` | 30--120 minutes |
+| SVM | `simulation_for_5_classes_svm.R` | `simulation_5_class_gaussian_hnp_svm.RData` | 30--120 minutes |
 
 The runner compares `Classical` and `H-NP` for each base learner and prints a summary table to the console. The table contains:
 
@@ -123,13 +133,15 @@ The runner compares `Classical` and `H-NP` for each base learner and prints a su
 Rscript run_simulation_0_05_5_classes_all.R
 ```
 
+Estimated time for `run_simulation_0_05_5_classes_all.R`: about 90--340 minutes.
+
 This runner executes the stricter five-class simulations:
 
-| Base learner | Individual script | Result file saved by the individual script |
-|---|---|---|
-| Logistic regression | `simulation_5_classes_0_05_logistic.R` | `simulation_5_class_gaussian_hnp_logistic_0_05.RData` |
-| Random forest | `simulation_5_classes_0_05_randomforest.R` | `simulation_5_class_gaussian_hnp_randomforest_0_05.RData` |
-| SVM | `simulation_5_classes_0_05_svm.R` | `simulation_5_class_gaussian_hnp_svm_0_05.RData` |
+| Base learner | Individual script | Result file saved by the individual script | Estimated time |
+|---|---|---|---:|
+| Logistic regression | `simulation_5_classes_0_05_logistic.R` | `simulation_5_class_gaussian_hnp_logistic_0_05.RData` | 10--40 minutes |
+| Random forest | `simulation_5_classes_0_05_randomforest.R` | `simulation_5_class_gaussian_hnp_randomforest_0_05.RData` | 40--150 minutes |
+| SVM | `simulation_5_classes_0_05_svm.R` | `simulation_5_class_gaussian_hnp_svm_0_05.RData` | 40--150 minutes |
 
 The printed table has the same format as the `alpha = delta = 0.1` five-class runner.
 
@@ -137,19 +149,19 @@ The printed table has the same format as the `alpha = delta = 0.1` five-class ru
 
 To run one base learner under `alpha = delta = 0.1`:
 
-```bash
-Rscript simulation_for_5_classes_logistic.R
-Rscript simulation_for_5_classes_randomforest.R
-Rscript simulation_for_5_classes_svm.R
-```
+| Command | Estimated time |
+|---|---:|
+| `Rscript simulation_for_5_classes_logistic.R` | 10--30 minutes |
+| `Rscript simulation_for_5_classes_randomforest.R` | 30--120 minutes |
+| `Rscript simulation_for_5_classes_svm.R` | 30--120 minutes |
 
 To run one base learner under `alpha = delta = 0.05`:
 
-```bash
-Rscript simulation_5_classes_0_05_logistic.R
-Rscript simulation_5_classes_0_05_randomforest.R
-Rscript simulation_5_classes_0_05_svm.R
-```
+| Command | Estimated time |
+|---|---:|
+| `Rscript simulation_5_classes_0_05_logistic.R` | 10--40 minutes |
+| `Rscript simulation_5_classes_0_05_randomforest.R` | 40--150 minutes |
+| `Rscript simulation_5_classes_0_05_svm.R` | 40--150 minutes |
 
 ---
 
