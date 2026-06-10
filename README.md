@@ -1,6 +1,6 @@
-# HNPclassifier Manuscript Code Guide
+# H-NP package Code Guide
 
-This repository contains the R scripts used for the examples, three-class simulations, and five-class simulations in the HNPclassifier manuscript. The current version adds two five-class runner scripts that run logistic regression, random forest, and SVM in one workflow and print the Classical vs. H-NP summary table.
+This repository contains the R scripts used for the examples, three-class simulations, and five-class simulations in the HNPclassifier manuscript. 
 
 ---
 
@@ -9,13 +9,13 @@ This repository contains the R scripts used for the examples, three-class simula
 Install the required R packages before running the scripts:
 
 ```r
-install.packages(c("MASS", "nnet", "randomForest", "e1071"))
+install.packages(c("MASS"))
 ```
 
-Most scripts load the local implementation with:
+Most scripts load the implementation with:
 
 ```r
-source("hnp_package_importance_order.R")
+library(HNPclassifier)
 ```
 
 ---
@@ -74,6 +74,9 @@ To run a single setting:
 
 ```bash
 Rscript simulation_for_3_classes_T1.R
+Rscript simulation_for_3_classes_T2.R
+Rscript simulation_for_3_classes_T3.R
+Rscript simulation_for_3_classes_T4.R
 ```
 
 The three-class summary table contains:
