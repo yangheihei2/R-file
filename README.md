@@ -211,9 +211,9 @@ To run one base learner only:
 
 | Script | Approximate time |
 |---|---:|
-| `diabetes_logistic.R` | 30--90 minutes |
+| `diabetes_logistic.R` | 30--90 seconds |
 | `diabetes_svm.R` | several hours |
-| `diabetes_randomforest.R` | 1--3 hours |
+| `diabetes_randomforest.R` | 30--90 seconds |
 
 Main outputs:
 
