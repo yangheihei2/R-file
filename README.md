@@ -191,51 +191,23 @@ The five-class random forest and SVM simulations are usually much slower than lo
 
 ## 6. Diabetes Real-Data Experiments (Figure 3 and Table 6)
 
-These scripts reproduce the diabetes application in the manuscript:
+These scripts reproduce the diabetes application. Place `diabetes_012_health_indicators_BRFSS2015.csv` in the repository root before running.
 
-| Manuscript output | Repository script / file |
-|---|---|
-| **Figure 3** (boxplots) | `diabetes_logistic.R`, `diabetes_svm.R`, `diabetes_randomforest.R`, or `run_all_diabetes_experiments.R` |
-| **Table 6** (summary table) | `run_all_diabetes_experiments.R` → `Diabetes_HNP_summary_table.png` |
-
-They apply H-NP to the BRFSS 2015 diabetes dataset (`diabetes_012_health_indicators_BRFSS2015.csv`). Place the CSV file in the repository root before running.
-
-### 6.1 Data and class labels
-
-| Original label | Mapped label | Meaning |
-|---|---|---|
-| `1` | `1` | Pre-diabetes (highest priority) |
-| `2` | `2` | Diabetes |
-| `0` | `3` | Healthy (lowest priority) |
-
-`importance_order <- c("1", "2", "3")`. Control levels: `alpha = c(0.4, 0.2)`, `delta = c(0.2, 0.2)`. Each run uses a 5% training split (`train_ratio = 0.05`) and evaluates on the remaining 95%.
-
-### 6.2 Individual scripts (Figure 3 panels)
-
-| Script | Base learner | Parallel cores | Figure 3 panel |
-|---|---|---:|---|
-| `diabetes_logistic.R` | Logistic regression | 25 | Logistic boxplot |
-| `diabetes_svm.R` | SVM | 10 | SVM boxplot |
-| `diabetes_randomforest.R` | Random forest (pre-trained) | 25 | Random forest boxplot |
-
-All three use standard `base_function` + `hnp_umbrella`, except random forest which uses `pretrained_model` and custom `hnp_split_match`.
-
-Run a single experiment:
+The recommended entry point is:
 
 ```bash
-Rscript diabetes_logistic.R
-Rscript diabetes_svm.R
-Rscript diabetes_randomforest.R
+Rscript run_all_diabetes_experiments.R
 ```
 
-Each script saves:
+This runner executes:
 
-- `Diabetes_HNP_Boxplot_<method>_100runs_5train.RData`
-- `Diabetes_HNP_Boxplot_<method>_100runs_5train.png`
+- `diabetes_logistic.R`
+- `diabetes_svm.R`
+- `diabetes_randomforest.R`
 
-For random forest, the output prefix is `trained_randomforest` (e.g. `Diabetes_HNP_Boxplot_trained_randomforest_100runs_5train.RData`).
+Estimated time for `run_all_diabetes_experiments.R`: several hours.
 
-Estimated time (100 runs, machine-dependent):
+To run one base learner only:
 
 | Script | Approximate time |
 |---|---:|
@@ -243,69 +215,32 @@ Estimated time (100 runs, machine-dependent):
 | `diabetes_svm.R` | several hours |
 | `diabetes_randomforest.R` | 1--3 hours |
 
-### 6.3 Run all three experiments (Figure 3 + Table 6)
+Main outputs:
 
-```bash
-Rscript run_all_diabetes_experiments.R
-```
-
-This runner sequentially executes all three diabetes scripts, then produces:
-
-- `Diabetes_HNP_summary_table.png` — **Table 6** in the manuscript
-- Boxplots for logistic, SVM, and pre-trained random forest — **Figure 3** in the manuscript
-
-The summary table columns match the three-class simulation format: `R1*`, `R2*`, `V1`, `V2`, and `R_overall`.
-
-### 6.4 Practical notes
-
-- Set `n_cores` to at most `detectCores() - 1` on your machine; using more workers than CPU cores does not speed up SVM runs.
-- After each parallel script, `stopCluster(cl)` releases worker processes. When running multiple experiments in one R session, `run_all_diabetes_experiments.R` also calls `registerDoSEQ()` and `gc()` between scripts.
-- SVM is slow mainly because `probability = TRUE` prediction is run on the large test set (~240k rows) and inside H-NP grid search. For faster debugging, reduce `n_runs` to 5--10 first.
+| Manuscript output | Repository output |
+|---|---|
+| Figure 3 | `Diabetes_HNP_Boxplot_<method>_100runs_5train.png` |
+| Table 6 | `Diabetes_HNP_summary_table.png` |
 
 ---
 
 ## 7. German Credit Experiment (Figure 4)
 
-This script reproduces the five-class German Credit application in the manuscript (**Figure 4**).
+This script reproduces the German Credit application.
 
 ```bash
 Rscript credit_new.R
 ```
 
-### 7.1 Data and class labels
+Estimated time for `credit_new.R`: about 30--90 minutes.
 
-The script loads `GermanCredit` from the `caret` package and constructs five ordered risk classes:
-
-| Label | Meaning |
-|---|---|
-| `1` | Bad credit (highest priority) |
-| `2`--`5` | Good credit, split by loan amount quartiles (lowest to highest risk) |
-
-`importance_order <- c("1", "2", "3", "4", "5")`. Control levels: `alpha = c(0.1, 0.1, 0.1, 0.1)`, `delta = c(0.2, 0.2, 0.2, 0.2)`. Each run uses a 70% training split (`train_ratio = 0.7`).
-
-### 7.2 Experimental settings
-
-| Setting | Value |
-|---|---|
-| Base learner | Random forest |
-| Runs | 100 |
-| Parallel cores | 25 |
-
-### 7.3 Output
+Main output:
 
 | Manuscript output | Repository file |
 |---|---|
-| **Figure 4** | Use `conf_classical` and `conf_hnp` from the saved `.RData` with `hnp_boxplot()` |
+| Figure 4 | `German_Credit_New_HNP_Boxplot_randomforest_100runs_70train_0.1_alphas.RData` |
 
-Main output file:
-
-- `German_Credit_New_HNP_Boxplot_randomforest_100runs_70train_0.1_alphas.RData`
-
-The `.RData` file also contains `under_summary_table` with columns `R1*`--`R4*`, `V1`--`V4`, and `Roverall` for Classical vs. H-NP.
-
-Estimated time: about 30--90 minutes (machine-dependent).
-
-### 7.4 Required packages
+Required packages:
 
 ```r
 install.packages(c("caret", "data.table", "randomForest", "foreach", "doParallel"))
