@@ -1,5 +1,5 @@
 library(HNPclassifier)
-
+library(MASS)
 set.seed(123)
 d <- 4
 
