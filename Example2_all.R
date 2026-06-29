@@ -1,9 +1,9 @@
-set.seed(2026)
+set.seed(123)
 
 library(HNPclassifier)
 
 n <- 500; d <- 3
-radii <- c(1.5, 1.5, 1.5); centers <- replicate(3, runif(d, -2, 2), simplify = FALSE)
+radii <- c(3, 3, 3); centers <- replicate(3, runif(d, -2, 2), simplify = FALSE)
 
 
 
@@ -144,4 +144,4 @@ for (i in seq_len(500)) {
 
 hnp_boxplot(conf_1 = conf_classical, conf_2 = conf_hnp, levels = alphas, tolerances = deltas)
 
-dev.off()
+
