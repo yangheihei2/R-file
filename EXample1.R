@@ -1,4 +1,4 @@
-source("hnp_package_importance_order.R")
+library(HNPclassifier)
 
 set.seed(123)
 d <- 4

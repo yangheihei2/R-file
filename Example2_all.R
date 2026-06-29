@@ -1,6 +1,6 @@
 set.seed(2026)
 
-source("hnp_package_importance_order.R")
+library(HNPclassifier)
 
 n <- 500; d <- 3
 radii <- c(1.5, 1.5, 1.5); centers <- replicate(3, runif(d, -2, 2), simplify = FALSE)

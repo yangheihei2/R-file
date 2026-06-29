@@ -1,9 +1,8 @@
 suppressPackageStartupMessages({
   library(MASS)
   library(nnet)
-  # library(HNPclassifier)
+  library(HNPclassifier)
 })
-source("hnp_package_importance_order.R")
 
 set.seed(123456)
 

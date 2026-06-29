@@ -1,4 +1,4 @@
-source("hnp_package_importance_order.R")
+library(HNPclassifier)
 
 scripts <- c(
   "simulation_for_5_classes_logistic.R",

@@ -9,7 +9,7 @@ library(foreach)
 library(doParallel)
 library(parallel)
 
-source("hnp_package_importance_order.R")
+library(HNPclassifier)
 
 # ---------- 1. Load and preprocess data ----------------------------
 
