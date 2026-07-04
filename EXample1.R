@@ -1,4 +1,9 @@
 library(HNPclassifier)
+library(MASS)
+
+RNGkind(kind = "Mersenne-Twister",
+        normal.kind = "Inversion",
+        sample.kind = "Rejection")
 
 set.seed(123)
 d <- 4
@@ -31,6 +36,7 @@ head(Train, 2)
 
 
 
+set.seed(1234)
 clf_hnp <- hnp_umbrella( X = Train[, feats, drop = FALSE], Y = Train$y, 
                          levels = c(0.1, 0.1), tolerances = c(0.1, 0.1), 
                          importance_order = c("A", "B", "C"),
