@@ -1,10 +1,13 @@
 library(HNPclassifier)
 library(MASS)
+<<<<<<< HEAD
 
 RNGkind(kind = "Mersenne-Twister",
         normal.kind = "Inversion",
         sample.kind = "Rejection")
 
+=======
+>>>>>>> fe4ec9fe6a4522f7a49f208f16561bf877027780
 set.seed(123)
 d <- 4
 
