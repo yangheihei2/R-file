@@ -236,14 +236,6 @@ To run one base learner only:
 | `diabetes_randomforest.R` | 30--90 seconds   |
 
 
-Main outputs:
-
-
-| Manuscript output | Repository output                                         |
-| ----------------- | --------------------------------------------------------- |
-| Figure 3          | Boxplots produced during `run_all_diabetes_experiments.R` |
-| Table 6           | `Diabetes_HNP_summary_table.png`                          |
-
 
 ---
 
@@ -276,12 +268,5 @@ This runner executes:
 - `credic_randomforest.R`
 - `credic_svm.R`
 
-Main outputs:
-
-
-| Manuscript output       | Repository output                          |
-| ----------------------- | ------------------------------------------ |
-| Supplementary Figure S1 | Boxplots produced during `credit_RF_SVM.R` |
-| Supplementary Table S1  | Summary table printed by `credit_RF_SVM.R` |
 
 
