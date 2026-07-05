@@ -38,7 +38,7 @@ The summary tables use the following notation:
 
 | Symbol | Meaning |
 |---|---|
-| $R_k^*$ | Mean under-classification error for class $k$. In the tables, `R1*` and `R2*` are $R_1^*$ and $R_2^*$. |
+| $R_k^*$ | Mean under-classification error for class $k$. In the tables, $R_1^* $ and $R_2^*$ are R1_star  and R2_star. |
 | $V_k$ | Violation rate for class $k$, defined as the proportion of runs in which $R_k^*$ exceeds the target level $\alpha_k$. In the tables, `V1` and `V2` are $V_1$ and $V_2$. |
 | $R_{\mathrm{overall}}$ | Mean overall misclassification error across all classes. |
 | $\alpha_k$ | Target upper bound for the under-classification error of class $k$. In the R scripts, this is set by `levels`. |
@@ -137,15 +137,7 @@ To run a single setting:
 | `simulation_for_3_classes_T3.R` | 1--3 minutes |
 | `simulation_for_3_classes_T4.R` | 1--3 minutes |
 
-The three-class summary table contains:
 
-| Column | Meaning |
-|---|---|
-| `Paradigm` | `Classical` for the original base learner; `H-NP` for the H-NP-adjusted classifier. |
-| `Setting` | `C1` / `C2` for classical baselines; `T1`--`T4` for H-NP split settings. |
-| `R1_star`, `R2_star` | Mean under-classification errors for classes 1 and 2. |
-| `V1`, `V2` | Violation rates, defined as the proportion of runs exceeding the target level. |
-| `R_overall` | Mean overall misclassification error. |
 
 ---
 
@@ -167,15 +159,7 @@ This runner executes the following three scripts:
 | Random forest | `simulation_for_5_classes_randomforest.R` | 2--3 hours |
 | SVM | `simulation_for_5_classes_svm.R` | 2--3 hours |
 
-The runner compares `Classical` and `H-NP` for each base learner and prints a summary table to the console. The table contains:
 
-| Column | Meaning |
-|---|---|
-| `Base method` | Base learner name. |
-| `Paradigm` | `Classical` or `H-NP`. |
-| `R1*`--`R4*` | Mean under-classification errors for classes 1--4. |
-| `V1`--`V4` | Violation rates for classes 1--4. |
-| `R_overall` | Mean overall misclassification error. |
 
 ### 4.2 Run all base learners: alpha = delta = 0.05 (Supplementary Table S2 and Supplementary Figure S2)
 
@@ -212,7 +196,7 @@ This runner executes:
 - `diabetes_svm.R`
 - `diabetes_randomforest.R`
 
-Estimated time for `run_all_diabetes_experiments.R`: several hours.
+Estimated time for `run_all_diabetes_experiments.R`: 2-3 hours.
 
 To run one base learner only:
 
@@ -229,7 +213,7 @@ Main outputs:
 | Figure 3 | Boxplots produced during `run_all_diabetes_experiments.R` |
 | Table 6 | `Diabetes_HNP_summary_table.png` |
 
-When `run_all_diabetes_experiments.R` is run in a non-interactive R session, the diabetes boxplots are written by R's default graphics device unless a graphics device is opened explicitly by the user.
+
 
 ---
 
@@ -243,15 +227,10 @@ Rscript credit_new.R
 
 Estimated time for `credit_new.R`: about 30--90 minutes.
 
-Main output:
-
-| Manuscript output | Repository file |
-|---|---|
-| Figure 4 | `German_Credit_New_HNP_Boxplot_randomforest_100runs_70train_0.1_alphas.RData` |
 
 ---
 
-## 7. German Credit RF and SVM Experiments (Supplementary Figure S1 and Supplementary Table S1)
+## 7. German Credit RF and SVM Experiments (Supplementary Figure S1 and S1)
 
 This script reproduces the supplementary German Credit results for random forest and SVM.
 
@@ -271,8 +250,4 @@ Main outputs:
 | Supplementary Figure S1 | Boxplots produced during `credit_RF_SVM.R` |
 | Supplementary Table S1 | Summary table printed by `credit_RF_SVM.R` |
 
-Additional packages used by the real-data scripts:
 
-```r
-install.packages(c("caret", "data.table", "randomForest", "foreach", "doParallel"))
-```
