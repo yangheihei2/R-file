@@ -268,5 +268,6 @@ This runner executes:
 - `credic_randomforest.R`
 - `credic_svm.R`
 
+Estimated time for `credit_RF_SVM.R`: about 40--100 minutes.
 
 
