@@ -183,11 +183,10 @@ conf_hnp <- to_conf_list(result_df, "hnp")
 cat("Result summarization completed.\n")
 
 script_output <- list(
-  setting = "svm",
-  n_train = n_train,
-  hnp_split = hnp_split,
-  alpha = alpha,
-  delta = delta,
+  base_method = method,
+  alpha = alphas,
+  delta = deltas,
+  importance_order = importance_order,
   conf_classical = conf_classical,
   conf_hnp = conf_hnp
 )
