@@ -84,7 +84,7 @@ This script demonstrates the basic use of `hnp_umbrella()`. The current base lea
 
 Estimated time: less than 1 minute.
 
-### 2.2 Example 2: three input modes
+### 2.2 Example 2: three input modes (Figure 1)
 
 ```bash
 Rscript Example2_all.R
@@ -100,7 +100,7 @@ Estimated time: about 1--2 minutes.
 
 ---
 
-## 3. Three-Class Simulations: T1--T4
+## 3. Three-Class Simulations: T1--T4 (Tables 3 and 4)
 
 The recommended entry point is:
 
@@ -151,7 +151,7 @@ The three-class summary table contains:
 
 ## 4. Five-Class Simulations
 
-### 4.1 Run all base learners: alpha = delta = 0.1
+### 4.1 Run all base learners: alpha = delta = 0.1 (Table 5 and Figure 2)
 
 ```bash
 Rscript run_simulation_for_5_classes_all.R
@@ -177,7 +177,7 @@ The runner compares `Classical` and `H-NP` for each base learner and prints a su
 | `V1`--`V4` | Violation rates for classes 1--4. |
 | `R_overall` | Mean overall misclassification error. |
 
-### 4.2 Run all base learners: alpha = delta = 0.05
+### 4.2 Run all base learners: alpha = delta = 0.05 (Supplementary Table S2 and Supplementary Figure S2)
 
 ```bash
 Rscript run_simulation_0_05_5_classes_all.R
@@ -233,7 +233,7 @@ When `run_all_diabetes_experiments.R` is run in a non-interactive R session, the
 
 ---
 
-## 6. German Credit Experiment (Figure 4)
+## 6. German Credit Experiment (Figure 4; Supplementary Figure S1 and Supplementary Table S1)
 
 This script reproduces the German Credit application.
 
