@@ -38,7 +38,7 @@ The summary tables use the following notation:
 
 | Symbol | Meaning |
 |---|---|
-| $R_k^*$ | Mean under-classification error for class $k$. In the tables, $ R_1^* $ and $R_2^*$ are R1_star  and R2_star. |
+| $R_k^*$ | Mean under-classification error for class $k$. In the tables, $R_1^{\star}$ and $R_2^{\star}$ are R1_star and R2_star. |
 | $V_k$ | Violation rate for class $k$, defined as the proportion of runs in which $R_k^*$ exceeds the target level $\alpha_k$. In the tables, `V1` and `V2` are V1 and V2. |
 | $R_{\mathrm{overall}}$ | Mean overall misclassification error across all classes. |
 | $\alpha_k$ | Target upper bound for the under-classification error of class $k$. In the R scripts, this is set by `levels`. |
