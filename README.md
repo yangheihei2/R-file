@@ -12,7 +12,6 @@ The runtimes and results reported in this guide were generated on the following 
 | Item             | Version / specification                  |
 | ---------------- | ---------------------------------------- |
 | Computer         | MacBook Air                              |
-| Model identifier | Mac17,3                                  |
 | Chip             | Apple M5                                 |
 | CPU cores        | 10 cores, 4 performance and 6 efficiency |
 | Memory           | 24 GB                                    |
