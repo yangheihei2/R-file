@@ -50,7 +50,7 @@ print(table(diabetes_data[[label_col]]))
 method <- "randomforest"
 
 n_runs <- 100
-n_cores <- 25
+n_cores <- 10
 
 alphas <- c(0.4, 0.2)
 deltas <- c(0.2, 0.2)
@@ -77,8 +77,8 @@ result_mat <- foreach(
   .packages = c("data.table", "caret", "randomForest")
 ) %dopar% {
   
-  source("hnp_package_importance_order.R")
-  
+
+  library(HNPclassifier)
   set.seed(2025 + k)
   
   hnp_idx <- createDataPartition(
@@ -92,21 +92,27 @@ result_mat <- foreach(
   
   parts_by_class <- vector("list", length(importance_order))
   
-  for (i in seq_along(importance_order)) {
-    cls <- importance_order[i]
+  parts_by_class <- lapply(seq_along(importance_order), function(i) {
     
     Si <- hnp_df[
-      as.character(hnp_df[[label_col]]) == cls,
+      as.character(hnp_df[[label_col]]) == importance_order[i],
       ,
       drop = FALSE
     ]
     
-    parts_by_class[[i]] <- hnp_split_one_class(
-      Si,
-      hnp_split_match[[i]],
-      class_i = i
+    idx <- sample.int(nrow(Si))
+    cut_pos <- floor(cumsum(unlist(hnp_split_match[[i]])) * nrow(Si))
+    
+    pick <- function(a, b) {
+      if (a <= b) idx[a:b] else integer(0)
+    }
+    
+    list(
+      Ss = Si[pick(1, cut_pos[1]), , drop = FALSE],
+      St = Si[pick(cut_pos[1] + 1, cut_pos[2]), , drop = FALSE],
+      Se = Si[pick(cut_pos[2] + 1, cut_pos[3]), , drop = FALSE]
     )
-  }
+  })
   
   Ss_df <- do.call(rbind, lapply(parts_by_class, function(x) x[["Ss"]]))
   St_df <- do.call(rbind, lapply(parts_by_class, function(x) x[["St"]]))
@@ -211,58 +217,13 @@ cat("Result summarization completed.\n")
 
 # ---------- 5. Save results and boxplot ----------------------------
 
-alpha <- alphas
-delta <- deltas
 base_method <- method
 
-mu <- NULL
-rho <- NULL
-Sigma <- NULL
-
-model_tag <- if (exists("hnp_split_match")) {
-  paste0("trained_", base_method)
-} else {
-  base_method
-}
-
-output_stem <- sprintf(
-  "Diabetes_HNP_Boxplot_%s_%druns_%dtrain",
-  model_tag,
-  n_runs,
-  as.integer(round(train_ratio * 100))
+script_output <- list(
+  base_method = base_method,
+  alpha = alphas,
+  delta = deltas,
+  importance_order = importance_order,
+  conf_classical = conf_classical,
+  conf_hnp = conf_hnp
 )
-
-png(
-  filename = paste0(output_stem, ".png"),
-  width = 1800,
-  height = 1200,
-  res = 180
-)
-
-boxplot_out <- hnp_boxplot(
-  conf_1 = conf_classical,
-  conf_2 = conf_hnp,
-  levels = alpha,
-  tolerances = delta,
-  name_1 = "Classical",
-  name_2 = "H-NP"
-)
-
-dev.off()
-
-save(
-  mu,
-  rho,
-  Sigma,
-  alpha,
-  delta,
-  importance_order,
-  base_method,
-  conf_classical,
-  conf_hnp,
-  boxplot_out,
-  file = paste0(output_stem, ".RData")
-)
-
-cat("Results saved to:", paste0(output_stem, ".RData"), "\n")
-cat("Boxplot saved to:", paste0(output_stem, ".png"), "\n")

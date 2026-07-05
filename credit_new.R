@@ -59,12 +59,12 @@ print(table(credit_data[[label_col]]))
 
 # ---------- 2. Experimental parameters ----------------------------
 
-method <- "randomforest"     # "logistic" | "svm" | "randomforest"
+method <- "logistic"     # "logistic" | "svm" | "randomforest"
 
 n_runs <- 100
-n_cores <- 25
+n_cores <- 10
 
-alphas <- c(0.1, 0.1, 0.1, 0.1)
+alphas <- c(0.2, 0.2, 0.2, 0.2)
 deltas <- c(0.2, 0.2, 0.2, 0.2)
 
 train_ratio <- 0.7
@@ -82,7 +82,7 @@ result_mat <- foreach(
   .packages = c("caret", "data.table", "randomForest")
 ) %dopar% {
   
-  source("hnp_package_importance_order.R")
+  library(HNPclassifier)
   
   set.seed(2025 + k)
   
@@ -100,7 +100,7 @@ result_mat <- foreach(
   x_test <- test_df[, feature_cols, drop = FALSE]
   y_test <- test_df[[label_col]]
   
-  classical_model <- base_function(
+  classical_model <- HNPclassifier:::base_function(
     x = x_train,
     y = y_train,
     method = method
@@ -182,7 +182,17 @@ conf_hnp <- to_conf_list(result_df, "hnp")
 
 cat("Result summarization completed.\n")
 
-# ---------- 5. Under-classification summary table ----------------------------
+# ---------- 5. Summary table ----------------------------
+
+
+hnp_boxplot(
+  conf_1 = conf_classical,
+  conf_2 = conf_hnp,
+  levels = alphas,
+  tolerances = deltas,
+  name_1 = "Classical",
+  name_2 = "HNP"
+)
 
 under_metric_by_run <- function(conf_list, importance_order) {
   n_cls <- length(importance_order)
@@ -199,13 +209,13 @@ under_metric_by_run <- function(conf_list, importance_order) {
     
     r_overall <- 1 - sum(diag(cm)) / sum(cm)
     
-    names(r_under) <- paste0("R", seq_len(n_cls - 1), "*")
+    names(r_under) <- paste0("R", seq_len(n_cls - 1), "star")
     
     c(r_under, Roverall = r_overall)
   }))
 }
 
-make_under_summary_table <- function(conf_classical, conf_hnp, alphas, importance_order) {
+make_summary_table <- function(conf_classical, conf_hnp, alphas, importance_order) {
   classical_metrics <- under_metric_by_run(conf_classical, importance_order)
   hnp_metrics <- under_metric_by_run(conf_hnp, importance_order)
   
@@ -217,7 +227,7 @@ make_under_summary_table <- function(conf_classical, conf_hnp, alphas, importanc
   )
   
   for (i in seq_len(n_risk)) {
-    r_col <- paste0("R", i, "*")
+    r_col <- paste0("R", i, "star")
     
     out[[r_col]] <- c(
       mean(classical_metrics[, r_col]),
@@ -226,7 +236,7 @@ make_under_summary_table <- function(conf_classical, conf_hnp, alphas, importanc
   }
   
   for (i in seq_len(n_risk)) {
-    r_col <- paste0("R", i, "*")
+    r_col <- paste0("R", i, "star")
     v_col <- paste0("V", i)
     
     out[[v_col]] <- c(
@@ -240,50 +250,21 @@ make_under_summary_table <- function(conf_classical, conf_hnp, alphas, importanc
     mean(hnp_metrics[, "Roverall"])
   )
   
+  num_cols <- sapply(out, is.numeric)
+  out[num_cols] <- lapply(
+    out[num_cols],
+    function(x) formatC(x, format = "f", digits = 3)
+  )
+  
   out
 }
 
-under_summary_table <- make_under_summary_table(
+summary_table <- make_summary_table(
   conf_classical = conf_classical,
   conf_hnp = conf_hnp,
   alphas = alphas,
   importance_order = importance_order
 )
 
-under_summary_table[, -1] <- round(under_summary_table[, -1], 3)
-
-cat("\nUnder-classification Error\n")
-print(under_summary_table, row.names = FALSE)
-
-# ---------- 6. Save results ----------------------------
-
-alpha <- alphas
-delta <- deltas
-base_method <- method
-
-mu <- NULL
-rho <- NULL
-Sigma <- NULL
-
-output_rdata <- sprintf(
-  "German_Credit_New_HNP_Boxplot_%s_%druns_%dtrain_0.1_alphas.RData",
-  base_method,
-  n_runs,
-  as.integer(round(train_ratio * 100))
-)
-
-save(
-  mu,
-  rho,
-  Sigma,
-  alpha,
-  delta,
-  importance_order,
-  base_method,
-  conf_classical,
-  conf_hnp,
-  under_summary_table,
-  file = output_rdata
-)
-
-cat("\nResults saved to:", output_rdata, "\n")
+cat("\n")
+print(summary_table, row.names = FALSE)

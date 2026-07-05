@@ -1,9 +1,10 @@
 # ============================================================
-#  Diabetes HNP Benchmark — 100 runs, parallel (25 cores)
+#  Credit HNP Benchmark — 100 runs, parallel
 # ============================================================
 
 library(caret)
 library(data.table)
+library(randomForest)
 library(foreach)
 library(doParallel)
 library(parallel)
@@ -12,46 +13,61 @@ library(HNPclassifier)
 
 # ---------- 1. Load and preprocess data ----------------------------
 
-diabetes_raw <- as.data.frame(
-  fread("diabetes_012_health_indicators_BRFSS2015.csv")
+data("GermanCredit")
+
+credit_raw <- as.data.frame(GermanCredit)
+
+label_col <- "amount"
+amount_source_col <- "Amount"
+original_target_col <- "Class"
+importance_order <- c("1", "2", "3", "4", "5")
+
+is_good <- as.character(credit_raw[[original_target_col]]) == "Good"
+good_amount <- credit_raw[[amount_source_col]][is_good]
+good_q <- quantile(good_amount, probs = c(0.25, 0.50, 0.75), na.rm = TRUE)
+
+new_class <- rep("1", nrow(credit_raw))
+
+good_idx <- which(is_good)
+good_vals <- credit_raw[[amount_source_col]][good_idx]
+
+new_class[good_idx] <- ifelse(
+  good_vals <= good_q[1], "2",
+  ifelse(
+    good_vals <= good_q[2], "3",
+    ifelse(good_vals <= good_q[3], "4", "5")
+  )
 )
 
-label_col <- "Diabetes_012"
-importance_order <- c("1", "2", "3")
+credit_raw[[label_col]] <- factor(new_class, levels = importance_order)
+credit_raw[[original_target_col]] <- NULL
 
-diabetes_raw[[label_col]] <- as.character(diabetes_raw[[label_col]])
-diabetes_raw <- diabetes_raw[
-  diabetes_raw[[label_col]] %in% c("1", "2", "0"), 
-  ,
-  drop = FALSE
-]
+feature_cols <- setdiff(names(credit_raw), c("Amount", label_col))
 
-diabetes_raw[[label_col]][diabetes_raw[[label_col]] == "0"] <- "3"
+credit_data <- credit_raw[, c(feature_cols, label_col), drop = FALSE]
+credit_data <- credit_data[complete.cases(credit_data), , drop = FALSE]
 
-feature_cols <- setdiff(names(diabetes_raw), label_col)
-
-diabetes_raw[feature_cols] <- lapply(diabetes_raw[feature_cols], as.numeric)
-
-diabetes_data <- diabetes_raw[, c(feature_cols, label_col), drop = FALSE]
-diabetes_data <- diabetes_data[complete.cases(diabetes_data), , drop = FALSE]
-diabetes_data[[label_col]] <- factor(
-  diabetes_data[[label_col]],
+credit_data[[label_col]] <- factor(
+  credit_data[[label_col]],
   levels = importance_order
 )
 
 cat("Data preprocessing completed.\n")
-print(table(diabetes_data[[label_col]]))
+cat("Total sample size:", nrow(credit_data), "\n")
+cat("Class distribution:\n")
+print(table(credit_data[[label_col]]))
 
 # ---------- 2. Experimental parameters ----------------------------
 
-method <- "svm"     # "logistic" | "svm" | "randomforest"
+method <- "randomForest"     # "logistic" | "svm" | "randomforest"
+
 n_runs <- 100
 n_cores <- 10
 
-alphas <- c(0.4, 0.2)
-deltas <- c(0.2, 0.2)
+alphas <- c(0.2, 0.2, 0.2, 0.2)
+deltas <- c(0.2, 0.2, 0.2, 0.2)
 
-train_ratio <- 0.05
+train_ratio <- 0.7
 
 # ---------- 3. Parallel experiments ----------------------------
 
@@ -63,20 +79,20 @@ set.seed(2025, kind = "L'Ecuyer-CMRG")
 result_mat <- foreach(
   k = seq_len(n_runs),
   .combine = "rbind",
-  .packages = c("data.table", "caret")
+  .packages = c("caret", "data.table", "randomForest")
 ) %dopar% {
   
-
   library(HNPclassifier)
+  
   set.seed(2025 + k)
   
   train_idx <- sample(
-    nrow(diabetes_data),
-    size = floor(train_ratio * nrow(diabetes_data))
+    nrow(credit_data),
+    size = floor(train_ratio * nrow(credit_data))
   )
   
-  train_df <- diabetes_data[ train_idx, , drop = FALSE]
-  test_df  <- diabetes_data[-train_idx, , drop = FALSE]
+  train_df <- credit_data[ train_idx, , drop = FALSE]
+  test_df  <- credit_data[-train_idx, , drop = FALSE]
   
   x_train <- train_df[, feature_cols, drop = FALSE]
   y_train <- train_df[[label_col]]
@@ -164,15 +180,14 @@ to_conf_list <- function(df, prefix) {
 conf_classical <- to_conf_list(result_df, "classical")
 conf_hnp <- to_conf_list(result_df, "hnp")
 
-# ---------- 5. Save results and boxplot ----------------------------
-
-base_method <- method
+cat("Result summarization completed.\n")
 
 script_output <- list(
-  base_method = base_method,
-  alpha = alphas,
-  delta = deltas,
-  importance_order = importance_order,
+  setting = "randomforest",
+  n_train = n_train,
+  hnp_split = hnp_split,
+  alpha = alpha,
+  delta = delta,
   conf_classical = conf_classical,
   conf_hnp = conf_hnp
 )

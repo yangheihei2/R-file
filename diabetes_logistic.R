@@ -46,7 +46,7 @@ print(table(diabetes_data[[label_col]]))
 
 method <- "logistic"     # "logistic" | "svm" | "randomforest"
 n_runs <- 100
-n_cores <- 25
+n_cores <- 10
 
 alphas <- c(0.4, 0.2)
 deltas <- c(0.2, 0.2)
@@ -66,8 +66,8 @@ result_mat <- foreach(
   .packages = c("data.table", "caret")
 ) %dopar% {
   
-  source("hnp_package_importance_order.R")
-  
+
+  library(HNPclassifier)
   set.seed(2025 + k)
   
   train_idx <- sample(
@@ -84,7 +84,7 @@ result_mat <- foreach(
   x_test <- test_df[, feature_cols, drop = FALSE]
   y_test <- test_df[[label_col]]
   
-  classical_model <- base_function(
+  classical_model <- HNPclassifier:::base_function(
     x = x_train,
     y = y_train,
     method = method
@@ -166,58 +166,14 @@ conf_hnp <- to_conf_list(result_df, "hnp")
 
 # ---------- 5. Save results and boxplot ----------------------------
 
-alpha <- alphas
-delta <- deltas
 base_method <- method
 
-mu <- NULL
-rho <- NULL
-Sigma <- NULL
-
-model_tag <- if (exists("hnp_split_match")) {
-  paste0("trained_", base_method)
-} else {
-  base_method
-}
-
-output_stem <- sprintf(
-  "Diabetes_HNP_Boxplot_%s_%druns_%dtrain",
-  model_tag,
-  n_runs,
-  as.integer(round(train_ratio * 100))
+script_output <- list(
+  base_method = base_method,
+  alpha = alphas,
+  delta = deltas,
+  importance_order = importance_order,
+  conf_classical = conf_classical,
+  conf_hnp = conf_hnp
 )
 
-png(
-  filename = paste0(output_stem, ".png"),
-  width = 1800,
-  height = 1200,
-  res = 180
-)
-
-boxplot_out <- hnp_boxplot(
-  conf_1 = conf_classical,
-  conf_2 = conf_hnp,
-  levels = alpha,
-  tolerances = delta,
-  name_1 = "Classical",
-  name_2 = "H-NP"
-)
-
-dev.off()
-
-save(
-  mu,
-  rho,
-  Sigma,
-  alpha,
-  delta,
-  importance_order,
-  base_method,
-  conf_classical,
-  conf_hnp,
-  boxplot_out,
-  file = paste0(output_stem, ".RData")
-)
-
-cat("Results saved to:", paste0(output_stem, ".RData"), "\n")
-cat("Boxplot saved to:", paste0(output_stem, ".png"), "\n")
