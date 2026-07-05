@@ -16,6 +16,7 @@ The runtimes and results reported in this guide were generated on the following 
 | CPU cores        | 10 cores, 4 performance and 6 efficiency |
 | Memory           | 24 GB                                    |
 | R                | 4.5.3, 2026-03-11                        |
+| RStudio          | 2026.01.2+418                            |
 
 
 R package versions used on this machine:
