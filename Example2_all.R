@@ -1,9 +1,9 @@
-set.seed(123)
+set.seed(2026)
 
 library(HNPclassifier)
 
 n <- 500; d <- 3
-radii <- c(3, 3, 3); centers <- replicate(3, runif(d, -2, 2), simplify = FALSE)
+radii <- c(1.5, 1.5, 1.5); centers <- replicate(3, runif(d, -2, 2), simplify = FALSE)
 
 
 
