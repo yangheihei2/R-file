@@ -66,7 +66,7 @@ clf_function <- hnp_umbrella(
   importance_order = c("C", "A", "B"),
   grid_search = FALSE,
   pretrained_model = score_fun
-
+  
 )
 
 out_function <- hnp_summary(
@@ -143,5 +143,4 @@ for (i in seq_len(500)) {
 
 
 hnp_boxplot(conf_1 = conf_classical, conf_2 = conf_hnp, levels = alphas, tolerances = deltas)
-
 
