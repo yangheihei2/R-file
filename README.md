@@ -26,12 +26,14 @@ R package versions used on this machine:
 | --------------- | ------- |
 | `HNPclassifier` | 0.2.0   |
 | `MASS`          | 7.3.65  |
+| `nnet`          | 7.3.20  |
+| `randomForest`  | 4.7.1.2 |
+| `e1071`         | 1.7.17  |
 | `caret`         | 7.0.1   |
 | `data.table`    | 1.18.4  |
-| `randomForest`  | 4.7.1.2 |
 | `foreach`       | 1.5.2   |
 | `doParallel`    | 1.0.17  |
-| `e1071`         | 1.7.17  |
+| `parallel`      | 4.5.3   |
 
 
 ---
@@ -62,15 +64,19 @@ Install the required R packages before running the scripts:
 
 ```r
 install.packages(c(
+  "HNPclassifier",
   "MASS",
+  "nnet",
+  "randomForest",
+  "e1071",
   "caret",
   "data.table",
-  "randomForest",
   "foreach",
-  "doParallel",
-  "e1071"
+  "doParallel"
 ))
 ```
+
+The scripts also use `parallel`, which is distributed with R.
 
 The scripts load the implementation with:
 
@@ -255,7 +261,7 @@ Estimated time for `credit_new.R`: about 30--90 minutes.
 
 
 
-## 7. German Credit RF and SVM Experiments (Supplementary Figure S1 and S1)
+## 7. German Credit RF and SVM Experiments (Supplementary Figure S1 and Supplementary Table S1)
 
 This script reproduces the supplementary German Credit results for random forest and SVM.
 
@@ -269,5 +275,3 @@ This runner executes:
 - `credic_svm.R`
 
 Estimated time for `credit_RF_SVM.R`: about 40--100 minutes.
-
-
