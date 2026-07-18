@@ -84,7 +84,7 @@ result_mat <- foreach(
   x_test <- test_df[, feature_cols, drop = FALSE]
   y_test <- test_df[[label_col]]
   
-  classical_model <- HNPclassifier:::base_function(
+  classical_model <- base_function(
     x = x_train,
     y = y_train,
     method = method
