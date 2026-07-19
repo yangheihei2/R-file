@@ -85,7 +85,7 @@ for (r in seq_len(n_runs)) {
   Train <- gen_data(n_train)
   Test  <- gen_data(n_test)
   
-  fit_classical <- HNPclassifier:::base_function(
+  fit_classical <- base_function(
     x = Train[, feats, drop = FALSE],
     y = Train$y,
     method = base_method
