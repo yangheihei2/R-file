@@ -24,7 +24,7 @@ R package versions used on this machine:
 
 | Package         | Version |
 | --------------- | ------- |
-| `HNPclassifier` | 0.2.0   |
+| `HNPclassifier` | 0.2.1   |
 | `MASS`          | 7.3.65  |
 | `nnet`          | 7.3.20  |
 | `randomForest`  | 4.7.1.2 |
