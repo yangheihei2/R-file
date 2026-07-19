@@ -85,7 +85,7 @@ for (r in seq_len(n_runs)) {
   Train <- gen_data(n_train)
   Test  <- gen_data(n_test)
   
-  fit_classical <- base_function(
+  fit_classical <- HNPclassifier:::base_function(
     x = Train[, feats, drop = FALSE],
     y = Train$y,
     method = base_method
@@ -164,33 +164,11 @@ hnp_boxplot(
   name_2 = "HNP"
 )
 
-
-
-save(
-  mu,
-  rho,
-  Sigma,
-  alpha,
-  delta,
-  importance_order,
-  base_method,
-  conf_classical,
-  conf_hnp,
-  boxplot_out,
-  file = "simulation_5_class_gaussian_hnp_randomforest.RData"
-)
-
-
-
-
-
-
-load("~/Desktop/code for paper HNP R/simulation_5_class_gaussian_hnp_randomforest.RData")
-hnp_boxplot(
-  conf_1 = conf_classical,
-  conf_2 = conf_hnp,
-  levels = alpha,
-  tolerances = delta,
-  name_1 = "Classical",
-  name_2 = "H-NP"
+script_output <- list(
+  base_method = base_method,
+  alpha = alpha,
+  delta = delta,
+  importance_order = importance_order,
+  conf_classical = conf_classical,
+  conf_hnp = conf_hnp
 )

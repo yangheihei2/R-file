@@ -92,4 +92,3 @@ num_cols <- 3:ncol(result_table)
 result_table[num_cols] <- lapply(result_table[num_cols], function(x) sprintf("%.3f", as.numeric(x)))
 
 print(result_table, row.names = FALSE)
-lapply(outs, make_plot_and_table)
