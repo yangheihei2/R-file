@@ -176,7 +176,6 @@ save(
   base_method,
   conf_classical,
   conf_hnp,
-  boxplot_out,
   file = "simulation_5_class_gaussian_hnp_svm_0_05.RData"
 )
 
