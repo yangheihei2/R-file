@@ -154,38 +154,13 @@ for (r in seq_len(n_runs)) {
   }
 }
 
-hnp_boxplot(
-  conf_1 = conf_classical,
-  conf_2 = conf_hnp,
-  levels = alpha,
-  tolerances = delta,
-  name_1 = "Classical",
-  name_2 = "HNP"
-)
 
 
-
-save(
-  mu,
-  rho,
-  Sigma,
-  alpha,
-  delta,
-  importance_order,
-  base_method,
-  conf_classical,
-  conf_hnp,
-  file = "simulation_5_class_gaussian_hnp_logistic_0_05.RData"
-)
-
-
-load("simulation_5_class_gaussian_hnp_logistic_0_05.RData")
-hnp_boxplot(
-  conf_1 = conf_classical,
-  conf_2 = conf_hnp,
-  levels = alpha,
-  tolerances = delta,
-  name_1 = "Classical",
-  name_2 = "H-NP"
+script_output <- list(
+  base_method = "logistic",
+  alpha = alpha,
+  delta = delta,
+  conf_classical = conf_classical,
+  conf_hnp = conf_hnp
 )
 
